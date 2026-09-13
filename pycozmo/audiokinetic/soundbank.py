@@ -10,7 +10,9 @@ References:
 
 from typing import BinaryIO, Iterable, Dict, Any
 import struct
-from chunk import Chunk
+# The standard library's chunk module was removed in Python 3.13 (PEP 594),
+# so the small part of it this file needs is vendored alongside.
+from .iff import Chunk
 
 from . import exception
 from . import soundbanksinfo

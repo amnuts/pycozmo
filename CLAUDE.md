@@ -25,7 +25,7 @@ Merged from upstream pull requests:
 Our own fixes: raw camera frames return JPEG bytes rather than a numpy array;
 debug prints removed from the NV storage handler; usage messages for
 `pycozmo_dump` and `pycozmo_replay` instead of `IndexError`; the u-law overflow
-below.
+below; and a vendored IFF chunk reader so Python 3.13+ works.
 
 ## Do not "correct" the u-law encoder
 
@@ -44,9 +44,13 @@ byte-for-byte unchanged.
 
 ## Python version
 
-**3.10.** `pycozmo/audio.py` imports `chunk` and consumers commonly use
-`audioop`; both were removed in Python 3.13. Upstream issue #69 covers this.
-Raising the floor means finding replacements first.
+Runs on **3.10 through 3.14**. `audiokinetic/soundbank.py` used the stdlib
+`chunk` module, removed in 3.13 by PEP 594 (upstream issue #69); the small
+part of it that was needed is now vendored as `audiokinetic/iff.py`, so
+there is no dependency and no version ceiling from it.
+
+Consumers using `audioop` need `audioop-lts` on 3.13+; it was removed by the
+same PEP but is not used inside pycozmo itself.
 
 ## Architecture worth knowing
 
