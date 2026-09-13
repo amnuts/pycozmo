@@ -82,4 +82,10 @@ def u_law_encoding(sample: int) -> int:
         position -= 1
 
     lsb = (sample >> (position - 4)) & 0x0f
-    return -(~(sign | ((position - 7) << 4) | lsb))
+    # u-law inverts every bit of the composed byte. In C that is ~x on an
+    # unsigned char; in Python ~x is negative, and negating it back gives x + 1
+    # rather than the complement - a different value for every sample, and 256
+    # for a full-scale negative one, which raises ValueError when stored in a
+    # bytearray. Masking to a byte is the faithful translation, and agrees with
+    # audioop.lin2ulaw across the range.
+    return ~(sign | ((position - 7) << 4) | lsb) & 0xFF
