@@ -84,7 +84,13 @@ class ReplayApp(object):
         time.sleep(1)
 
 
+USAGE = "usage: pycozmo_replay.py <capture.pcap>"
+
+
 def main():
+    if len(sys.argv) != 2:
+        sys.exit(USAGE)
+
     fspec = sys.argv[1]
     log_messages = []   # "objects", "audio", "state"]
     replay_messages = []    # "lights", "objects"]

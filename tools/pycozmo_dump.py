@@ -93,7 +93,16 @@ class DumpApp(object):
         pc.loop(0, self.handle_frame)
 
 
+USAGE = """usage: pycozmo_dump.py <capture.pcap | interface>
+
+An existing path is decoded as a capture file. Anything else is treated as an
+interface name for live capture, which requires pypcap."""
+
+
 def main():
+    if len(sys.argv) != 2:
+        sys.exit(USAGE)
+
     fspec = sys.argv[1]
 
     app = DumpApp()
